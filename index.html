@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E-Shop Demo - Adobe Analytics</title>
+
+<script>
+/* ---------------- GLOBAL DATALAYER ---------------- */
+window.dataLayer = window.dataLayer || [];
+
+/* ---------------- PAGE LOAD ---------------- */
+window.dataLayer.push({
+  event: "pageLoad",
+  page: {
+    pageName: "Home",
+    pageType: "homepage"
+  },
+  user: {
+    loginStatus: "guest"
+  }
+});
+
+/* ---------------- FUNCTIONS ---------------- */
+
+// Product View
+function viewProduct() {
+  window.dataLayer.push({
+    event: "productView",
+    ecommerce: {
+      productName: "iPhone 15",
+      productCategory: "Mobile",
+      productId: "P123",
+      price: 80000
+    }
+  });
+  alert("Product Viewed");
+}
+
+// Add to Cart
+function addToCart() {
+  window.dataLayer.push({
+    event: "addToCart",
+    ecommerce: {
+      productName: "iPhone 15",
+      productCategory: "Mobile",
+      productId: "P123",
+      price: 80000,
+      quantity: 1
+    }
+  });
+  alert("Added to Cart");
+}
+
+// Remove from Cart
+function removeFromCart() {
+  window.dataLayer.push({
+    event: "removeFromCart",
+    ecommerce: {
+      productName: "iPhone 15",
+      productId: "P123"
+    }
+  });
+  alert("Removed from Cart");
+}
+
+// Search
+function searchProduct() {
+  let keyword = document.getElementById("searchBox").value;
+
+  window.dataLayer.push({
+    event: "search",
+    search: {
+      keyword: keyword,
+      results: 5
+    }
+  });
+  alert("Search Triggered: " + keyword);
+}
+
+// Login
+function loginUser() {
+  window.dataLayer.push({
+    event: "login",
+    user: {
+      loginStatus: "logged-in",
+      userId: "U1001"
+    }
+  });
+  alert("User Logged In");
+}
+
+// Checkout Start
+function checkoutStart() {
+  window.dataLayer.push({
+    event: "checkout",
+    ecommerce: {
+      step: "checkout_start",
+      cartValue: 80000
+    }
+  });
+  alert("Checkout Started");
+}
+
+// Purchase
+function purchase() {
+  window.dataLayer.push({
+    event: "purchase",
+    ecommerce: {
+      orderId: "ORD12345",
+      revenue: 80000,
+      tax: 2000,
+      shipping: 500,
+      productName: "iPhone 15"
+    }
+  });
+  alert("Purchase Completed");
+}
+</script>
+
+<style>
+body { font-family: Arial; margin: 20px; }
+.product { border: 1px solid #ccc; padding: 15px; width: 250px; }
+button { margin: 5px; padding: 8px; background: green; color: white; border: none; }
+input { padding: 6px; }
+</style>
+
+</head>
+
+<body>
+
+<h1>🛒 E-Shop Demo (Adobe Analytics)</h1>
+
+<!-- Search -->
+<input type="text" id="searchBox" placeholder="Search product">
+<button onclick="searchProduct()">Search</button>
+
+<br><br>
+
+<!-- Product -->
+<div class="product">
+  <h3>iPhone 15</h3>
+  <p>Category: Mobile</p>
+  <p>Price: ₹80,000</p>
+
+  <button onclick="viewProduct()">View Product</button>
+  <button onclick="addToCart()">Add to Cart</button>
+  <button onclick="removeFromCart()">Remove</button>
+</div>
+
+<br>
+
+<!-- User Actions -->
+<button onclick="loginUser()">Login</button>
+<button onclick="checkoutStart()">Checkout</button>
+<button onclick="purchase()">Buy Now</button>
+
+</body>
+</html>
