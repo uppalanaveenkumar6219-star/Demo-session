@@ -21,13 +21,8 @@ window.dataLayer.push({
 </script>
 
 <style>
-body {
-  margin:0;
-  font-family:Arial;
-  background:#f5f6fa;
-}
+body { margin:0; font-family:Arial; background:#f5f6fa; }
 
-/* Header */
 .header {
   background:#ff6f61;
   color:white;
@@ -36,7 +31,6 @@ body {
   justify-content:space-between;
 }
 
-/* Banner */
 .banner {
   background:white;
   margin:20px;
@@ -47,7 +41,6 @@ body {
   align-items:center;
 }
 
-/* Products */
 .products {
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
@@ -64,9 +57,7 @@ body {
   transition:0.3s;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
+.card:hover { transform: translateY(-5px); }
 
 .card img {
   width:100px;
@@ -87,15 +78,8 @@ button {
 .cart { background:#2ecc71; color:white; }
 .remove { background:#e74c3c; color:white; }
 
-.actions {
-  text-align:center;
-  padding:20px;
-}
-
-.actions button {
-  background:#333;
-  color:white;
-}
+.actions { text-align:center; padding:20px; }
+.actions button { background:#333; color:white; }
 </style>
 </head>
 
@@ -133,7 +117,7 @@ button {
 
   <!-- Laptop -->
   <div class="card">
-    <img src="https://cdn-icons-png.flaticon.com/512/2920/2920244.png">
+    <img src="https://cdn-icons-png.flaticon.com/512/5977/5977575.png">
     <h3>Laptop</h3>
     <p>₹60,000</p>
     <button class="view" data-name="Laptop">View</button>
@@ -142,7 +126,7 @@ button {
 
   <!-- Headphones -->
   <div class="card">
-    <img src="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+    <img src="https://cdn-icons-png.flaticon.com/512/727/727269.png">
     <h3>Headphones</h3>
     <p>₹5,000</p>
     <button class="view" data-name="Headphones">View</button>
@@ -170,7 +154,7 @@ button {
 <!-- JAVASCRIPT -->
 <script>
 
-// Debug Listener (Simulates Adobe Analytics)
+// Debug Listener
 (function() {
   const originalPush = dataLayer.push;
   dataLayer.push = function() {
@@ -185,7 +169,6 @@ document.querySelectorAll(".view").forEach(btn => {
   btn.addEventListener("click", function() {
     let name = this.dataset.name;
     alert("Viewed " + name);
-
     dataLayer.push({
       event: "productView",
       product: { name: name, category: "Electronics" }
@@ -197,7 +180,6 @@ document.querySelectorAll(".cart").forEach(btn => {
   btn.addEventListener("click", function() {
     let name = this.dataset.name;
     alert("Added " + name);
-
     dataLayer.push({
       event: "addToCart",
       product: { name: name }
@@ -209,7 +191,6 @@ document.querySelectorAll(".remove").forEach(btn => {
   btn.addEventListener("click", function() {
     let name = this.dataset.name;
     alert("Removed " + name);
-
     dataLayer.push({
       event: "removeFromCart",
       product: { name: name }
@@ -221,7 +202,6 @@ document.querySelectorAll(".remove").forEach(btn => {
 document.getElementById("searchBtn").addEventListener("click", function() {
   let keyword = document.getElementById("searchBox").value;
   alert("Search: " + keyword);
-
   dataLayer.push({
     event: "search",
     search: { keyword: keyword }
@@ -231,7 +211,6 @@ document.getElementById("searchBtn").addEventListener("click", function() {
 // Login
 document.getElementById("loginBtn").addEventListener("click", function() {
   alert("Login Success");
-
   dataLayer.push({
     event: "login",
     user: { loginStatus: "logged-in", userId: "U123" }
@@ -241,7 +220,6 @@ document.getElementById("loginBtn").addEventListener("click", function() {
 // Checkout
 document.getElementById("checkoutBtn").addEventListener("click", function() {
   alert("Checkout Started");
-
   dataLayer.push({
     event: "checkout",
     cart: { value: 80000 }
@@ -251,20 +229,17 @@ document.getElementById("checkoutBtn").addEventListener("click", function() {
 // Purchase
 document.getElementById("purchaseBtn").addEventListener("click", function() {
   alert("Purchase Done");
-
   dataLayer.push({
     event: "purchase",
     order: { orderId: "ORD123", revenue: 80000 }
   });
 });
 
-// Promo Click
+// Promo
 document.getElementById("promoBtn").addEventListener("click", function() {
   alert("Promo Clicked");
-
   dataLayer.push({
-    event: "promoClick",
-    promo: { name: "Homepage Banner" }
+    event: "promoClick"
   });
 });
 
