@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>E-Shop Pro Demo</title>
+<title>E-Shop Final</title>
 
-<!-- ---------------- DATALAYER ---------------- -->
 <script>
 window.dataLayer = window.dataLayer || [];
 
@@ -21,108 +20,59 @@ window.dataLayer.push({
 });
 </script>
 
-<!-- ---------------- STYLES ---------------- -->
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f5f6fa;
-}
+body { margin:0; font-family:Arial; background:#f5f6fa; }
 
 /* Header */
 .header {
-  background: #ff6f61;
-  color: white;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header input {
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
+  background:#ff6f61;
+  color:white;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
 }
 
 /* Banner */
 .banner {
-  background: white;
-  margin: 20px;
-  padding: 30px;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background:white;
+  margin:20px;
+  padding:20px;
+  border-radius:10px;
+  display:flex;
+  justify-content:space-between;
 }
 
-.banner h2 {
-  margin: 0;
-}
-
-.banner button {
-  background: #ff6f61;
-  border: none;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* Product Grid */
+/* Products */
 .products {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap:20px;
+  padding:20px;
 }
 
 .card {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  text-align: center;
+  background:white;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-.card img {
-  width: 100%;
-  height: 150px;
-  object-fit: contain;
+button {
+  margin:5px;
+  padding:8px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
 }
 
-.card h3 {
-  margin: 10px 0;
-}
+.view { background:#3498db; color:white; }
+.cart { background:#2ecc71; color:white; }
+.remove { background:#e74c3c; color:white; }
 
-.card button {
-  margin: 5px;
-  padding: 8px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.view { background: #3498db; color: white; }
-.cart { background: #2ecc71; color: white; }
-.remove { background: #e74c3c; color: white; }
-
-/* Footer buttons */
-.actions {
-  padding: 20px;
-  text-align: center;
-}
-
-.actions button {
-  margin: 5px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 6px;
-  background: #333;
-  color: white;
-}
+.actions { text-align:center; padding:20px; }
+.actions button { background:#333; color:white; }
 </style>
-
 </head>
 
 <body>
@@ -131,140 +81,119 @@ body {
 <div class="header">
   <h2>🛒 E-Shop</h2>
   <div>
-    <input type="text" id="searchBox" placeholder="Search...">
-    <button onclick="search()">Search</button>
+    <input id="searchBox" placeholder="Search...">
+    <button id="searchBtn">Search</button>
   </div>
 </div>
 
 <!-- BANNER -->
 <div class="banner">
   <div>
-    <h2>Your One-Stop Electronics Store</h2>
-    <p>Best deals on gadgets</p>
-    <button onclick="viewPromo()">Shop Now</button>
+    <h2>Electronics Store</h2>
+    <button id="promoBtn">Shop Now</button>
   </div>
-  <img src="https://cdn-icons-png.flaticon.com/512/1041/1041373.png" width="150">
 </div>
 
 <!-- PRODUCTS -->
 <div class="products">
-
   <div class="card">
-    <img src="https://cdn-icons-png.flaticon.com/512/0/191.png">
     <h3>iPhone 15</h3>
     <p>₹80,000</p>
-    <button class="view" onclick="viewProduct()">View</button>
-    <button class="cart" onclick="addToCart()">Add</button>
-    <button class="remove" onclick="removeCart()">Remove</button>
+    <button class="view" id="viewBtn">View</button>
+    <button class="cart" id="addBtn">Add</button>
+    <button class="remove" id="removeBtn">Remove</button>
   </div>
-
-  <div class="card">
-    <img src="https://cdn-icons-png.flaticon.com/512/1041/1041373.png">
-    <h3>Headphones</h3>
-    <p>₹5,000</p>
-    <button class="view" onclick="viewProduct('Headphones')">View</button>
-    <button class="cart" onclick="addToCart('Headphones')">Add</button>
-  </div>
-
 </div>
 
 <!-- ACTIONS -->
 <div class="actions">
-  <button onclick="login()">Login</button>
-  <button onclick="checkout()">Checkout</button>
-  <button onclick="purchase()">Buy Now</button>
+  <button id="loginBtn">Login</button>
+  <button id="checkoutBtn">Checkout</button>
+  <button id="purchaseBtn">Buy Now</button>
 </div>
 
-<!-- ---------------- JAVASCRIPT ---------------- -->
+<!-- JAVASCRIPT -->
 <script>
 
-// Product View
-function viewProduct(product = "iPhone 15") {
-  window.dataLayer.push({
-    event: "productView",
-    product: {
-      name: product,
-      category: "Electronics"
-    }
-  });
-}
+// -------- DATA LAYER LISTENER (DEBUG) --------
+(function() {
+  const originalPush = window.dataLayer.push;
+  window.dataLayer.push = function() {
+    const args = Array.from(arguments);
+    args.forEach(e => console.log("📊 Event:", e));
+    return originalPush.apply(this, args);
+  };
+})();
 
-// Add to Cart
-function addToCart(product = "iPhone 15") {
-  window.dataLayer.push({
-    event: "addToCart",
-    product: {
-      name: product,
-      price: 80000,
-      quantity: 1
-    }
-  });
-}
+// -------- EVENTS AFTER DOM LOAD --------
+document.addEventListener("DOMContentLoaded", function() {
 
-// Remove
-function removeCart() {
-  window.dataLayer.push({
-    event: "removeFromCart",
-    product: {
-      name: "iPhone 15"
-    }
+  document.getElementById("viewBtn").addEventListener("click", function() {
+    alert("Product Viewed");
+    dataLayer.push({
+      event: "productView",
+      product: { name: "iPhone 15", category: "Mobile" }
+    });
   });
-}
 
-// Search
-function search() {
-  let keyword = document.getElementById("searchBox").value;
-  window.dataLayer.push({
-    event: "search",
-    search: {
-      keyword: keyword
-    }
+  document.getElementById("addBtn").addEventListener("click", function() {
+    alert("Added to Cart");
+    dataLayer.push({
+      event: "addToCart",
+      product: { name: "iPhone 15", price: 80000 }
+    });
   });
-}
 
-// Login
-function login() {
-  window.dataLayer.push({
-    event: "login",
-    user: {
-      loginStatus: "logged-in",
-      userId: "U123"
-    }
+  document.getElementById("removeBtn").addEventListener("click", function() {
+    alert("Removed from Cart");
+    dataLayer.push({
+      event: "removeFromCart",
+      product: { name: "iPhone 15" }
+    });
   });
-}
 
-// Checkout
-function checkout() {
-  window.dataLayer.push({
-    event: "checkout",
-    cart: {
-      value: 80000
-    }
+  document.getElementById("searchBtn").addEventListener("click", function() {
+    let keyword = document.getElementById("searchBox").value;
+    alert("Search: " + keyword);
+    dataLayer.push({
+      event: "search",
+      search: { keyword: keyword }
+    });
   });
-}
 
-// Purchase
-function purchase() {
-  window.dataLayer.push({
-    event: "purchase",
-    order: {
-      orderId: "ORD999",
-      revenue: 80000,
-      tax: 2000,
-      shipping: 500
-    }
+  document.getElementById("loginBtn").addEventListener("click", function() {
+    alert("Login Success");
+    dataLayer.push({
+      event: "login",
+      user: { loginStatus: "logged-in", userId: "U123" }
+    });
   });
-}
 
-// Promo Click
-function viewPromo() {
-  window.dataLayer.push({
-    event: "promoClick",
-    promo: {
-      name: "Homepage Banner"
-    }
+  document.getElementById("checkoutBtn").addEventListener("click", function() {
+    alert("Checkout Started");
+    dataLayer.push({
+      event: "checkout",
+      cart: { value: 80000 }
+    });
   });
-}
+
+  document.getElementById("purchaseBtn").addEventListener("click", function() {
+    alert("Purchase Done");
+    dataLayer.push({
+      event: "purchase",
+      order: { orderId: "ORD123", revenue: 80000 }
+    });
+  });
+
+  document.getElementById("promoBtn").addEventListener("click", function() {
+    alert("Promo Clicked");
+    dataLayer.push({
+      event: "promoClick",
+      promo: { name: "Homepage Banner" }
+    });
+  });
+
+});
 
 </script>
 
