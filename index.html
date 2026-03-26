@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>E-Shop Final</title>
+
+<!-- Adobe Launch Dev Script -->
 <script src="https://assets.adobedtm.com/e72b4113c11a/c99811a14ae0/launch-0f0752ea7087-development.min.js" async></script>
+
 <script>
 window.dataLayer = window.dataLayer || [];
 
@@ -100,7 +103,6 @@ button {
 <!-- PRODUCTS -->
 <div class="products">
 
-  <!-- iPhone -->
   <div class="card">
     <img src="https://m.media-amazon.com/images/I/61bK6PMOC3L._SX679_.jpg">
     <h3>iPhone 15</h3>
@@ -110,7 +112,6 @@ button {
     <button class="remove" data-name="iPhone 15">Remove</button>
   </div>
 
-  <!-- Laptop -->
   <div class="card">
     <img src="https://m.media-amazon.com/images/I/71TPda7cwUL._SX679_.jpg">
     <h3>Laptop</h3>
@@ -119,7 +120,6 @@ button {
     <button class="cart" data-name="Laptop">Add</button>
   </div>
 
-  <!-- Headphones -->
   <div class="card">
     <img src="https://m.media-amazon.com/images/I/61CGHv6kmWL._SX679_.jpg">
     <h3>Headphones</h3>
@@ -128,7 +128,6 @@ button {
     <button class="cart" data-name="Headphones">Add</button>
   </div>
 
-  <!-- Smart Watch -->
   <div class="card">
     <img src="https://m.media-amazon.com/images/I/61y2VVWcGBL._SX679_.jpg">
     <h3>Smart Watch</h3>
@@ -159,7 +158,7 @@ button {
   };
 })();
 
-// Product Events
+// Product View
 document.querySelectorAll(".view").forEach(btn => {
   btn.addEventListener("click", function() {
     let name = this.dataset.name;
@@ -171,6 +170,7 @@ document.querySelectorAll(".view").forEach(btn => {
   });
 });
 
+// Add to Cart
 document.querySelectorAll(".cart").forEach(btn => {
   btn.addEventListener("click", function() {
     let name = this.dataset.name;
@@ -182,6 +182,7 @@ document.querySelectorAll(".cart").forEach(btn => {
   });
 });
 
+// Remove
 document.querySelectorAll(".remove").forEach(btn => {
   btn.addEventListener("click", function() {
     let name = this.dataset.name;
@@ -221,13 +222,18 @@ document.getElementById("checkoutBtn").addEventListener("click", function() {
   });
 });
 
-// Purchase
+// Purchase (DYNAMIC ORDER ID)
 document.getElementById("purchaseBtn").addEventListener("click", function() {
-  alert("Purchase Done");
+
+  let orderId = "ORD" + Math.floor(Math.random() * 1000000);
+
+  alert("Purchase Done - " + orderId);
+
   dataLayer.push({
     event: "purchase",
-    order: { orderId: "ORD123", revenue: 80000 }
+    order: { orderId: orderId, revenue: 80000 }
   });
+
 });
 
 // Promo
