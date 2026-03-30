@@ -22,36 +22,82 @@ window.dataLayer.push({
   }
 });
 
-// Popup Function
-function showPopup(message) {
-  let popup = document.createElement("div");
-  popup.innerText = message;
-
-  popup.style.position = "fixed";
-  popup.style.bottom = "20px";
-  popup.style.right = "20px";
-  popup.style.background = "#2ecc71";
-  popup.style.color = "#fff";
-  popup.style.padding = "10px";
-  popup.style.borderRadius = "5px";
-  popup.style.zIndex = "9999";
-
-  document.body.appendChild(popup);
-  setTimeout(() => popup.remove(), 2000);
+// Popup
+function showPopup(msg) {
+  let p = document.createElement("div");
+  p.innerText = msg;
+  p.style.position = "fixed";
+  p.style.bottom = "20px";
+  p.style.right = "20px";
+  p.style.background = "#2ecc71";
+  p.style.color = "#fff";
+  p.style.padding = "12px";
+  p.style.borderRadius = "6px";
+  p.style.zIndex = "9999";
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 2000);
 }
 </script>
 
 <style>
 body { margin:0; font-family:Arial; background:#f5f6fa; }
-.header { background:#ff6f61; color:white; padding:15px; display:flex; justify-content:space-between; }
-.banner { background:white; margin:20px; padding:25px; border-radius:10px; }
-.products { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:20px; padding:20px; }
-.card { background:white; padding:15px; border-radius:10px; text-align:center; }
-button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer; }
+
+.header {
+  background:#ff6f61;
+  color:white;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.banner {
+  background:white;
+  margin:20px;
+  padding:25px;
+  border-radius:10px;
+}
+
+.products {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:20px;
+  padding:20px;
+}
+
+.card {
+  background:white;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width:120px;
+  height:120px;
+  object-fit:contain;
+}
+
+button {
+  margin:5px;
+  padding:8px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
 .view { background:#3498db; color:white; }
 .cart { background:#2ecc71; color:white; }
-.actions { text-align:center; padding:20px; }
-.actions button { background:#333; color:white; }
+
+.actions {
+  text-align:center;
+  padding:20px;
+}
+
+.actions button {
+  background:#333;
+  color:white;
+}
 </style>
 </head>
 
@@ -73,6 +119,7 @@ button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer
 <div class="products">
 
   <div class="card" data-category="Electronics">
+    <img src="https://m.media-amazon.com/images/I/61bK6PMOC3L._SX679_.jpg">
     <h3>iPhone 15</h3>
     <p>₹80,000</p>
     <button class="view">View</button>
@@ -80,8 +127,17 @@ button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer
   </div>
 
   <div class="card" data-category="Electronics">
+    <img src="https://m.media-amazon.com/images/I/71TPda7cwUL._SX679_.jpg">
     <h3>Laptop</h3>
     <p>₹60,000</p>
+    <button class="view">View</button>
+    <button class="cart">Add</button>
+  </div>
+
+  <div class="card" data-category="Electronics">
+    <img src="https://m.media-amazon.com/images/I/61CGHv6kmWL._SX679_.jpg">
+    <h3>Headphones</h3>
+    <p>₹5,000</p>
     <button class="view">View</button>
     <button class="cart">Add</button>
   </div>
@@ -97,8 +153,8 @@ button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer
 <script>
 
 // Helper
-function getProductData(element) {
-  let card = element.closest(".card");
+function getProductData(el) {
+  let card = el.closest(".card");
   return {
     name: card.querySelector("h3").innerText,
     category: card.dataset.category,
@@ -108,77 +164,56 @@ function getProductData(element) {
 
 // View
 document.querySelectorAll(".view").forEach(btn => {
-  btn.addEventListener("click", function() {
+  btn.onclick = function() {
     let product = getProductData(this);
-
-    dataLayer.push({
-      event: "productView",
-      product: product
-    });
-
-    showPopup("Viewed");
-  });
+    dataLayer.push({ event: "productView", product: product });
+    showPopup("Viewed " + product.name);
+  };
 });
 
 // Add to Cart
 document.querySelectorAll(".cart").forEach(btn => {
-  btn.addEventListener("click", function() {
+  btn.onclick = function() {
     let product = getProductData(this);
-
-    dataLayer.push({
-      event: "addToCart",
-      product: product
-    });
-
-    showPopup("Added to cart");
-  });
+    dataLayer.push({ event: "addToCart", product: product });
+    showPopup(product.name + " added to cart");
+  };
 });
 
 // Search
 document.getElementById("searchBtn").onclick = function() {
   let keyword = document.getElementById("searchBox").value;
-
-  dataLayer.push({
-    event: "search",
-    search: { keyword: keyword }
-  });
-
-  showPopup("Search done");
+  dataLayer.push({ event: "search", search: { keyword: keyword } });
+  showPopup("Search: " + keyword);
 };
 
 // Login
 document.getElementById("loginBtn").onclick = function() {
-  dataLayer.push({
-    event: "login"
-  });
-
+  dataLayer.push({ event: "login" });
   showPopup("Logged in");
 };
 
 // Checkout
 document.getElementById("checkoutBtn").onclick = function() {
-  dataLayer.push({
-    event: "checkout"
-  });
-
-  showPopup("Checkout");
+  dataLayer.push({ event: "checkout" });
+  showPopup("Checkout started");
 };
 
 // Purchase
 document.getElementById("purchaseBtn").onclick = function() {
   dataLayer.push({
-    event: "purchase"
+    event: "purchase",
+    order: {
+      orderId: "ORD" + Date.now(),
+      revenue: Math.floor(Math.random()*100000)
+    }
   });
-
-  showPopup("Purchased");
+  showPopup("Order placed");
 };
 
 // Promo
 document.getElementById("promoBtn").onclick = function() {
-  dataLayer.push({
-    event: "promoClick"
-  });
-
+  dataLayer.push({ event: "promoClick" });
   showPopup("Promo clicked");
 };
 
