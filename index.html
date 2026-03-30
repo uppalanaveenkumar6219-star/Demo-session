@@ -10,7 +10,7 @@
 <script>
 window.dataLayer = window.dataLayer || [];
 
-// Page Load (Dynamic)
+// Page Load
 window.dataLayer.push({
   event: "pageLoad",
   page: {
@@ -21,6 +21,24 @@ window.dataLayer.push({
     loginStatus: "guest"
   }
 });
+
+// Popup Function
+function showPopup(message) {
+  let popup = document.createElement("div");
+  popup.innerText = message;
+
+  popup.style.position = "fixed";
+  popup.style.bottom = "20px";
+  popup.style.right = "20px";
+  popup.style.background = "#2ecc71";
+  popup.style.color = "#fff";
+  popup.style.padding = "10px";
+  popup.style.borderRadius = "5px";
+  popup.style.zIndex = "9999";
+
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 2000);
+}
 </script>
 
 <style>
@@ -28,12 +46,10 @@ body { margin:0; font-family:Arial; background:#f5f6fa; }
 .header { background:#ff6f61; color:white; padding:15px; display:flex; justify-content:space-between; }
 .banner { background:white; margin:20px; padding:25px; border-radius:10px; }
 .products { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:20px; padding:20px; }
-.card { background:white; padding:15px; border-radius:10px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
-.card img { width:120px; height:120px; object-fit:contain; }
+.card { background:white; padding:15px; border-radius:10px; text-align:center; }
 button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer; }
 .view { background:#3498db; color:white; }
 .cart { background:#2ecc71; color:white; }
-.remove { background:#e74c3c; color:white; }
 .actions { text-align:center; padding:20px; }
 .actions button { background:#333; color:white; }
 </style>
@@ -56,9 +72,7 @@ button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer
 
 <div class="products">
 
-  <!-- Product Card -->
   <div class="card" data-category="Electronics">
-    <img src="https://m.media-amazon.com/images/I/61bK6PMOC3L._SX679_.jpg">
     <h3>iPhone 15</h3>
     <p>₹80,000</p>
     <button class="view">View</button>
@@ -66,17 +80,8 @@ button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer
   </div>
 
   <div class="card" data-category="Electronics">
-    <img src="https://m.media-amazon.com/images/I/71TPda7cwUL._SX679_.jpg">
     <h3>Laptop</h3>
     <p>₹60,000</p>
-    <button class="view">View</button>
-    <button class="cart">Add</button>
-  </div>
-
-  <div class="card" data-category="Electronics">
-    <img src="https://m.media-amazon.com/images/I/61CGHv6kmWL._SX679_.jpg">
-    <h3>Headphones</h3>
-    <p>₹5,000</p>
     <button class="view">View</button>
     <button class="cart">Add</button>
   </div>
@@ -91,7 +96,7 @@ button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer
 
 <script>
 
-// 🔹 Helper to get product details dynamically
+// Helper
 function getProductData(element) {
   let card = element.closest(".card");
   return {
@@ -101,7 +106,7 @@ function getProductData(element) {
   };
 }
 
-// 🔹 Product View
+// View
 document.querySelectorAll(".view").forEach(btn => {
   btn.addEventListener("click", function() {
     let product = getProductData(this);
@@ -110,10 +115,12 @@ document.querySelectorAll(".view").forEach(btn => {
       event: "productView",
       product: product
     });
+
+    showPopup("Viewed");
   });
 });
 
-// 🔹 Add to Cart
+// Add to Cart
 document.querySelectorAll(".cart").forEach(btn => {
   btn.addEventListener("click", function() {
     let product = getProductData(this);
@@ -122,62 +129,58 @@ document.querySelectorAll(".cart").forEach(btn => {
       event: "addToCart",
       product: product
     });
+
+    showPopup("Added to cart");
   });
 });
 
-// 🔹 Search
-document.getElementById("searchBtn").addEventListener("click", function() {
+// Search
+document.getElementById("searchBtn").onclick = function() {
   let keyword = document.getElementById("searchBox").value;
 
   dataLayer.push({
     event: "search",
     search: { keyword: keyword }
   });
-});
 
-// 🔹 Login
-document.getElementById("loginBtn").addEventListener("click", function() {
+  showPopup("Search done");
+};
+
+// Login
+document.getElementById("loginBtn").onclick = function() {
   dataLayer.push({
-    event: "login",
-    user: {
-      loginStatus: "logged-in",
-      userId: "U" + Math.floor(Math.random()*1000)
-    }
-  });
-});
-
-// 🔹 Checkout
-document.getElementById("checkoutBtn").addEventListener("click", function() {
-  dataLayer.push({
-    event: "checkout",
-    cart: {
-      value: Math.floor(Math.random()*100000)
-    }
-  });
-});
-
-// 🔹 Purchase (FULLY DYNAMIC)
-document.getElementById("purchaseBtn").addEventListener("click", function() {
-
-  let orderId = "ORD" + Date.now(); // dynamic
-  let revenue = Math.floor(Math.random() * 100000);
-
-  dataLayer.push({
-    event: "purchase",
-    order: {
-      orderId: orderId,
-      revenue: revenue
-    }
+    event: "login"
   });
 
-});
+  showPopup("Logged in");
+};
 
-// 🔹 Promo
-document.getElementById("promoBtn").addEventListener("click", function() {
+// Checkout
+document.getElementById("checkoutBtn").onclick = function() {
+  dataLayer.push({
+    event: "checkout"
+  });
+
+  showPopup("Checkout");
+};
+
+// Purchase
+document.getElementById("purchaseBtn").onclick = function() {
+  dataLayer.push({
+    event: "purchase"
+  });
+
+  showPopup("Purchased");
+};
+
+// Promo
+document.getElementById("promoBtn").onclick = function() {
   dataLayer.push({
     event: "promoClick"
   });
-});
+
+  showPopup("Promo clicked");
+};
 
 </script>
 
