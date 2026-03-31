@@ -8,20 +8,6 @@
 <script src="https://assets.adobedtm.com/e72b4113c11a/c99811a14ae0/launch-d8585b5fbe7b.min.js" async></script>
 
 <script>
-window.dataLayer = window.dataLayer || [];
-
-// Page Load
-window.dataLayer.push({
-  event: "pageLoad",
-  page: {
-    pageName: document.title,
-    pageType: "homepage"
-  },
-  user: {
-    loginStatus: "guest"
-  }
-});
-
 // Popup
 function showPopup(msg) {
   let p = document.createElement("div");
@@ -41,63 +27,16 @@ function showPopup(msg) {
 
 <style>
 body { margin:0; font-family:Arial; background:#f5f6fa; }
-
-.header {
-  background:#ff6f61;
-  color:white;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-}
-
-.banner {
-  background:white;
-  margin:20px;
-  padding:25px;
-  border-radius:10px;
-}
-
-.products {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:20px;
-  padding:20px;
-}
-
-.card {
-  background:white;
-  padding:15px;
-  border-radius:10px;
-  text-align:center;
-  box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.card img {
-  width:120px;
-  height:120px;
-  object-fit:contain;
-}
-
-button {
-  margin:5px;
-  padding:8px;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-}
-
+.header { background:#ff6f61; color:white; padding:15px; display:flex; justify-content:space-between; }
+.banner { background:white; margin:20px; padding:25px; border-radius:10px; }
+.products { display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; padding:20px; }
+.card { background:white; padding:15px; border-radius:10px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+.card img { width:120px; height:120px; object-fit:contain; }
+button { margin:5px; padding:8px; border:none; border-radius:5px; cursor:pointer; }
 .view { background:#3498db; color:white; }
 .cart { background:#2ecc71; color:white; }
-
-.actions {
-  text-align:center;
-  padding:20px;
-}
-
-.actions button {
-  background:#333;
-  color:white;
-}
+.actions { text-align:center; padding:20px; }
+.actions button { background:#333; color:white; }
 </style>
 </head>
 
@@ -162,32 +101,26 @@ function getProductData(el) {
   };
 }
 
-// ✅ View (FINAL FIX APPLIED)
+// ✅ VIEW (FINAL)
 document.querySelectorAll(".view").forEach(btn => {
   btn.onclick = function() {
     let product = getProductData(this);
 
-    dataLayer.push({
-      event: "productView",
-      detail: {
-        product: product
-      }
+    _satellite.track("productView", {
+      product: product
     });
 
     showPopup("Viewed " + product.name);
   };
 });
 
-// ✅ Add to Cart (UPDATED SAME WAY)
+// ✅ ADD TO CART
 document.querySelectorAll(".cart").forEach(btn => {
   btn.onclick = function() {
     let product = getProductData(this);
 
-    dataLayer.push({
-      event: "addToCart",
-      detail: {
-        product: product
-      }
+    _satellite.track("addToCart", {
+      product: product
     });
 
     showPopup(product.name + " added to cart");
@@ -197,37 +130,41 @@ document.querySelectorAll(".cart").forEach(btn => {
 // Search
 document.getElementById("searchBtn").onclick = function() {
   let keyword = document.getElementById("searchBox").value;
-  dataLayer.push({ event: "search", search: { keyword: keyword } });
+
+  _satellite.track("search", {
+    keyword: keyword
+  });
+
   showPopup("Search: " + keyword);
 };
 
 // Login
 document.getElementById("loginBtn").onclick = function() {
-  dataLayer.push({ event: "login" });
+  _satellite.track("login");
   showPopup("Logged in");
 };
 
 // Checkout
 document.getElementById("checkoutBtn").onclick = function() {
-  dataLayer.push({ event: "checkout" });
+  _satellite.track("checkout");
   showPopup("Checkout started");
 };
 
 // Purchase
 document.getElementById("purchaseBtn").onclick = function() {
-  dataLayer.push({
-    event: "purchase",
+  _satellite.track("purchase", {
     order: {
       orderId: "ORD" + Date.now(),
       revenue: Math.floor(Math.random()*100000)
     }
   });
+
   showPopup("Order placed");
 };
 
 // Promo
 document.getElementById("promoBtn").onclick = function() {
-  dataLayer.push({ event: "promoClick" });
+  _satellite.track("promoClick");
   showPopup("Promo clicked");
 };
 
