@@ -162,20 +162,34 @@ function getProductData(el) {
   };
 }
 
-// View
+// ✅ View (FINAL FIX APPLIED)
 document.querySelectorAll(".view").forEach(btn => {
   btn.onclick = function() {
     let product = getProductData(this);
-    dataLayer.push({ event: "productView", product: product });
+
+    dataLayer.push({
+      event: "productView",
+      detail: {
+        product: product
+      }
+    });
+
     showPopup("Viewed " + product.name);
   };
 });
 
-// Add to Cart
+// ✅ Add to Cart (UPDATED SAME WAY)
 document.querySelectorAll(".cart").forEach(btn => {
   btn.onclick = function() {
     let product = getProductData(this);
-    dataLayer.push({ event: "addToCart", product: product });
+
+    dataLayer.push({
+      event: "addToCart",
+      detail: {
+        product: product
+      }
+    });
+
     showPopup(product.name + " added to cart");
   };
 });
