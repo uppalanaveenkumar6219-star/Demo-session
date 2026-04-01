@@ -4,31 +4,19 @@
 <meta charset="UTF-8">
 <title>E-Shop Final</title>
 
-<script>
-window.dataLayer = window.dataLayer || [];
-
-// Page Load
-window.dataLayer.push({
-  event: "pageLoad",
-  page: {
-    pageName: document.title,
-    pageType: "homepage"
-  },
-  user: {
-    loginStatus: "guest"
-  }
-});
-</script>
-
 <script src="https://assets.adobedtm.com/e72b4113c11a/c99811a14ae0/launch-d8585b5fbe7b.min.js"></script>
 
 <script>
-// ✅ FINAL FIX (CORE FUNCTION)
-function trackEvent(payload) {
-  window.dataLayer.push(payload);
+// 🔥 FINAL DIRECT ADOBE TRACKING FUNCTION
+function sendAdobeEvent(eVar, eventName, eVarName) {
+  if (window.s && typeof s.tl === "function") {
+    s.linkTrackVars = eVarName + ",events";
+    s.linkTrackEvents = eventName;
 
-  if (payload.event && window._satellite) {
-    _satellite.track(payload.event);
+    s[eVarName] = eVar;
+    s.events = eventName;
+
+    s.tl(true, "o", eventName);
   }
 }
 
@@ -125,74 +113,61 @@ function getProductData(el) {
   };
 }
 
-// View
+// 🔎 SEARCH (event10 + eVar11)
+document.getElementById("searchBtn").onclick = function() {
+  let keyword = document.getElementById("searchBox").value;
+
+  sendAdobeEvent(keyword, "event10", "eVar11");
+
+  showPopup("Search: " + keyword);
+};
+
+// 📦 PRODUCT VIEW
 document.querySelectorAll(".view").forEach(btn => {
   btn.onclick = function() {
     let product = getProductData(this);
 
-    trackEvent({
-      event: "productView",
-      product: product
-    });
+    sendAdobeEvent(product.name, "event7", "eVar10");
 
     showPopup("Viewed " + product.name);
   };
 });
 
-// Add to Cart
+// 🛒 ADD TO CART
 document.querySelectorAll(".cart").forEach(btn => {
   btn.onclick = function() {
     let product = getProductData(this);
 
-    trackEvent({
-      event: "addToCart",
-      product: product
-    });
+    sendAdobeEvent(product.name, "event11", "eVar10");
 
     showPopup(product.name + " added to cart");
   };
 });
 
-// Search
-document.getElementById("searchBtn").onclick = function() {
-  let keyword = document.getElementById("searchBox").value;
-
-  trackEvent({
-    event: "search",
-    search: { keyword: keyword }
-  });
-
-  showPopup("Search: " + keyword);
-};
-
-// Login
+// 👤 LOGIN
 document.getElementById("loginBtn").onclick = function() {
-  trackEvent({ event: "login" });
+  sendAdobeEvent("logged_in", "event12", "eVar12");
   showPopup("Logged in");
 };
 
-// Checkout
+// 🛍️ CHECKOUT
 document.getElementById("checkoutBtn").onclick = function() {
-  trackEvent({ event: "checkout" });
+  sendAdobeEvent("checkout", "event12", "eVar12");
   showPopup("Checkout started");
 };
 
-// Purchase (✅ ORDER ID FIXED)
+// 💰 PURCHASE (FIXED ORDER ID)
 document.getElementById("purchaseBtn").onclick = function() {
-  trackEvent({
-    event: "purchase",
-    order: {
-      orderId: "ORD" + Date.now(),
-      revenue: Math.floor(Math.random()*100000)
-    }
-  });
+  let orderId = "ORD" + Date.now();
 
-  showPopup("Order placed");
+  sendAdobeEvent(orderId, "event13", "eVar13");
+
+  showPopup("Order placed: " + orderId);
 };
 
 // Promo
 document.getElementById("promoBtn").onclick = function() {
-  trackEvent({ event: "promoClick" });
+  sendAdobeEvent("promo", "event14", "eVar14");
   showPopup("Promo clicked");
 };
 
